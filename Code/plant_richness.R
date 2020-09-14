@@ -1,6 +1,8 @@
 #group project
 
 #Lea Opitz (s1757963)
+#Alessandra Cianfanelli (s1751650)
+
 
 
 ## THis is Alison's code
