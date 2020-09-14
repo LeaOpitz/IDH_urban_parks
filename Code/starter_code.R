@@ -95,5 +95,13 @@ orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air
 
 plantlm <- lm(Shannon~distance*Site, data = p_div)
 summary(plantlm)
+anova(plantlm)
 plot(plantlm)
 
+#differance between site and distance (continous) significant
+
+# distance as factor
+plantlm <- lm(Shannon~as.factor(distance)*Site, data = p_div)
+summary(plantlm)
+anova(plantlm) #less significant
+plot(plantlm)
