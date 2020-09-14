@@ -14,5 +14,8 @@ library(goeveg)
 
 #load data ----
 b_plants <- read.csv("Data/raw_data_b_plants.csv")
-c_plants <- read.csv("Data/raw_data_c_plants.csv")
+c_plants <- read.csv("Data/raw_data_c_plants.csv") 
 soil <- read.csv("Data/raw_data_soil.csv")
+
+#join data
+plants <- bind_rows(b_plants, c_plants)
