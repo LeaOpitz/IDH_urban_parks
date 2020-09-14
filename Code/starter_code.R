@@ -19,7 +19,7 @@ c_plants <- read.csv("Data/raw_data_c_plants.csv")
 soil <- read.csv("Data/raw_data_soil.csv")
 
 p_div <- read.csv("Data/PlantD.csv")
-i_div <- read.csv("Data/InsectD.csv")
+i_div <- read.csv("Data/InsectD1.csv")
 
 
 #write.csv2(species, file="test.csv")
@@ -70,7 +70,7 @@ for(i in unique(group)) {
            groups = group[group == i],col = colors[grep(i,group)],label=F) } 
 
 orditorp(NMDS3, display = "species", col = "red", air = 0.01)
-orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air = 0.01, cex = 1.25)
+orditorp(NMDS3, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
 
 ## distance
 
@@ -90,3 +90,10 @@ orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air = 0.01, cex = 1.25)
 
 #take species off graph
+
+##lms ----
+
+plantlm <- lm(Shannon~distance*Site, data = p_div)
+summary(plantlm)
+plot(plantlm)
+
