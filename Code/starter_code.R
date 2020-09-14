@@ -13,9 +13,11 @@ library(goeveg)
 
 
 #load data ----
-b_plants <- read.csv("Data/raw_data_b_plants.csv")
+b_plants <- read.csv("Data/raw_data_b_plants.csv") %>% 
+  rename(q_species = q.species)
 c_plants <- read.csv("Data/raw_data_c_plants.csv") 
 soil <- read.csv("Data/raw_data_soil.csv")
 
 #join data
-plants <- bind_rows(b_plants, c_plants)
+plants <- bind_rows(b_plants, c_plants) %>%
+  dplyr::select(1:36)
