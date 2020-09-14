@@ -1,0 +1,173 @@
+---
+title: "Graphs and NMDS Demo"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+```{r Set your working directory}
+
+#First just change this to whatever folder you want to work from
+
+#Tip: you can go to the folder you want in Windows File Explorer and right click on the folder in the bar at the top (e.g. where it might be like, Work > Field course > coding stuff) and select "copy address as text" - this saves you having to type it out! I don't know whether this works on macs though...
+
+setwd("M:\0.Work\Demonstrating\ESS Field Course 2020\R code") 
+
+```
+
+
+```{r Install and load up your packages}
+
+install.packages("tidyverse") #this will install the 'tidyverse' packages. Tidyverse is a collection of packages that includes ggplot2.
+library(tidyverse)
+
+install.packages("wesanderson")
+library(wesanderson)
+
+install.packages("vegan")
+library(vegan)
+
+install.packages("goeveg")
+library(goeveg)
+
+```
+
+
+# Making cute graphs
+Graphs made in base R are ugly. Graphs made in ggplot2 (an R package from a series called 'the tidyverse') are cute.  
+
+From the coding club tutorial about how ggplot2 works: "Writing the code for your graph is like constructing a sentence made up of different parts that logically follow from one another. In a more visual way, it means adding layers that take care of different elements of the plot. Your plotting workflow will therefore be something like creating an empty plot, adding a layer with your data points, then your measure of uncertainty, the axis labels, and so on"
+
+A solid framework for (cute) ggplot graphs looks like this:
+
+ggplot(~stuff here~) +
+  
+
+
+```{r Boring basic graph}
+
+#We can use the 'iris' dataset - it's already loaded into R
+data(iris)
+iris$Fake.Variable <- as.factor(rep(c("A", "B", "C"),50))
+head(iris)
+
+
+#Making a basic boxplot of sepal length against species:
+
+ggplot(data = iris,                   #First you call 'ggplot' and give it your data...
+       aes(x = Species,               #Then inside 'ggplot' you call 'aes'. Inside this give it the variable you want on your X-axis...
+           y = Petal.Width,          #And the variable you want as your Y-axis...
+           fill = Fake.Variable)) +   #And any factors that you want to split your data up by. Here I'm separating it by the 'Fake variable', and using the fill of the boxplots to show it.
+  geom_boxplot()                      #Second you add on (with a '+' sign) the way that you want to show your data - here it's a boxplot. If you wanted to do a scatter graph you would add on 'geom_point()', or if you wanted to do a bar chart you would add on 'geom_bar()'
+
+
+```
+
+```{r Snazzy graph}
+
+# But it doesn't look great - here's how you jazz it up...
+
+ggplot(data = iris,                   
+       aes(x = Species,
+           y = Petal.Width,
+           fill = Fake.Variable)) +
+  geom_boxplot(size=0.7) +                          #'size' inside geom_boxplot controls the width of all the lines
+  scale_x_discrete(name = "\nPlant species") +    #scale_x_discrete controls stuff to do with the x-axis (scale_x_discrete is for discrete axes - like a box plot - if you've got continuous axes - like a scatter plot - you would use scale_x_continuous). 'name' changes the title of the axis. Also - '\n' is basically an enter - puts it on another line.
+  scale_y_continuous(name = "Petal Width\n",      #scale_y_continuous controls stuff to do with the y-axis. 
+                     limits = c(0,3)) +           #This changes the range of the axis - it's always good practice to start your graph at zero, otherwise you can misrepresent patterns.
+  scale_fill_manual(name = "Random\nvariable:",   #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
+                    values = wes_palette(name = "Darjeeling1", n = 3)) +  #Here I've given it specific colours to use (from the wes anderson colour palette package!)
+  theme_minimal() +                               #this line is a preset theme that changes the aesthetics. See below for some more options. Try them out to see what you like!
+  theme(text=element_text(size=18),               #You can use 'theme()' to change specific elements of the graph - this is vry very optional. You can change nearly any element of how a graph looks within the 'theme' function. This first line is increasing the overall text size.
+        axis.text.x = element_text(face = "italic"), #...this line puts the axis lavels in italics
+        panel.grid.minor = element_line(size = 0.6), #...this line widens the background gridlines (the minor ones)
+        panel.grid.major = element_line(size = 0.6)  #...this line widens the background gridlines (the major ones)
+        )
+
+#To save your plots as images to use in posters/reports etc, I would always recommend saving it with code manually, rather than 'Exporting' from the plot window in R Studio, since it means you can be consistent with the size + it's SO much quicker if you want to change the plot in any way.
+ggsave("testplot.png", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)
+
+```
+
+
+## More pretty colours
+This is also a good site for cool colour palettes: https://www.color-hex.com/color-palettes/
+Find one you like (or just find individual colours you like), and get the hex codes - they look like this: #519f98
+Then in scale_fill_manual you just include the hex codes (rememeber to have as many colours/codes as you do categories!) like this: scale_fill_manual(values = c("#519f98", "#5a76ae", "#625cb3"))
+
+## More themes
+Try looking at:
+theme_gray(): Gray background color and white grid lines. Put the data forward to make comparisons easy.
+theme_bw(): White background and gray grid lines. May work better for presentations displayed with a projector.
+theme_linedraw(): A theme with black lines of various widths on white backgrounds, reminiscent of a line drawings.
+theme_light(): A theme similar to theme_linedraw() but with light grey lines and axes, to direct more attention towards the data.
+
+
+-------------------------------------------------------------------------------------------------------
+
+# NMDS
+For credit - I've adapted a lot of this from the coding club 'Introduction to ordination' course.
+
+## Conceptually what it is
+You've got data that has loads of dimensions
+Each species you have found can be thought of one 'dimension'. 
+You could plot species #1 against species #2 (with different dots for different samples), but what about species #3, #4, #5 etc.? You could plot as many graphs as you have combinations of species. Not great when you just want to show how your samples differ!
+
+Methodology of NMDS:
+
+Step 1: Perform NMDS with 1 to 10 dimensions
+Step 2: Check the stress vs dimension plot
+Step 3: Choose optimal number of dimensions
+Step 4: Perform final NMDS with that number of dimensions
+Step 5: Check for convergent solution and final stress
+
+
+## Format the data needs to be in/what data you need
+
+
+```{r}
+# To check how many dimensions you need
+dimcheckMDS(as.matrix(varespec), distance = "bray", k = 6, trymax = 20,
+            autotransform = TRUE)
+
+# Because the final result depends on the initial random placement of the points, we`ll set a seed to make the results reproducible
+set.seed(2)
+
+NMDS3 <- metaMDS(varespec, k = 2, trymax = 100, trace = F, autotransform = FALSE, distance="bray")
+NMDS3
+
+stressplot(NMDS3)
+
+plot(NMDS3)
+```
+
+
+## Plotting the NMDS
+```{r}
+ordiplot(NMDS3, type = "n")
+orditorp(NMDS3, display = "species", col = "red", air = 0.01)
+orditorp(NMDS3, display = "sites", cex = 1.1, air = 0.01)
+```
+
+## Overlaying the groups (e.g. your distances from the path, or your different sites)
+```{r}
+# Define a group variable (first 12 samples belong to group 1, last 12 samples to group 2)
+group = c(rep("Group1", 12), rep("Group2", 12))
+
+# Create a vector of color values with same length as the vector of group values
+colors = c(rep("red", 12), rep("blue", 12))
+
+# Plot convex hulls with colors based on the group identity
+ordiplot(NMDS3, type = "n")
+
+for(i in unique(group)) {
+  ordihull(NMDS3$point[grep(i, group),], draw="polygon",
+   groups = group[group == i],col = colors[grep(i,group)],label=F) } 
+
+orditorp(NMDS3, display = "species", col = "red", air = 0.01)
+orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air = 0.01, cex = 1.25)
+```
+
