@@ -118,8 +118,11 @@ group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 # Create a vector of color values with same length as the vector of group values
 colors = rep(c("yellow", "orange", "red", "purple"), 14)
 
+
+
 # Plot convex hulls with colors based on the group identity
-ordiplot(NMDS3, type = "n")
+ordiplot(NMDS3, type = "n", cex.axis = 2, cex.lab = 2)
+box(lwd=3)
 
 for(i in unique(group)) {
   ordihull(NMDS3$point[grep(i, group),], draw="polygon",
