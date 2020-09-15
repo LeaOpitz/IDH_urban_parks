@@ -34,12 +34,14 @@ i_div <- read.csv("Data/InsectD1.csv")
 
 #join data
 plants <- bind_rows(b_plants, c_plants) %>% #join
-  dplyr::select(1:36) %>% #remove last columns
-  dplyr::
+  dplyr::select(1:36) #remove last columns
+plants = plants[1:56,]
 
 species <-  dplyr::select(plants,2:36) 
 species[is.na(species)] <- 0
 species = species[1:56,]
+
+
 
 ### NMDS -----
 #check dimension
@@ -79,7 +81,7 @@ for(i in unique(group)) {
 orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS3, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
 
-## distance
+## Distance plot, with nice colours
 
 group = rep(c("0m", "1m", "7m", "14m"), 14)
 
@@ -93,10 +95,15 @@ for(i in unique(group)) {
   ordihull(NMDS3$point[grep(i, group),], draw="polygon",
            groups = group[group == i],col = colors[grep(i,group)],label=F) } 
 
-orditorp(NMDS3, display = "species", col = "red", air = 0.01)
-orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air = 0.01, cex = 1.25)
+# orditorp(NMDS3, display = "species", col = "red", air = 0.01)
+# orditorp(NMDS3, display = "sites", labels = substr(plants$q_species,1,1), air = 0.01, cex = 1.25)
 
 #take species off graph
+
+
+
+
+
 
 ##lms ----
 
