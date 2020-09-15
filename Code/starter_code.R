@@ -110,7 +110,10 @@ for(i in unique(group)) {
 orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS3, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
 
-## Distance plot, with nice colours
+
+
+
+## Distance plot, with nice colours --------------------
 
 group = rep(c("0m", "1m", "7m", "14m"), 14)
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
