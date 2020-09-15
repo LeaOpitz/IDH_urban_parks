@@ -26,8 +26,8 @@ c_plants <- read.csv("Data/raw_data_c_plants.csv")
 soil <- read.csv("Data/raw_data_soil.csv")
 
 p_div <- read.csv("Data/PlantD.csv")
-i_div <- read.csv("Data/InsectD1.csv")
-
+i_div <- read.csv("Data/InsectD1.csv") %>% 
+  drop_na()
 
 #write.csv2(species, file="test.csv")
 
@@ -46,26 +46,26 @@ species = species[1:56,]
 
 ### boxplot----
 ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-      geom_boxplot(size=0.7) +
+      geom_boxplot(size=0.2) +
       theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
                     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
   scale_y_discrete(name = "Shannon's Diversity Index\n")
                       
-ggsave("plantbox.png", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 1)                      
+ggsave("plantbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
  
 
 
 ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-  geom_boxplot(size=0.7) +
+  geom_boxplot(size=0.2) +
   theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
   scale_y_discrete(name = "Shannon's Diversity Index\n")
 
-ggsave("invertbox.png", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 1)                      
+ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
 
 
 ### NMDS -----
