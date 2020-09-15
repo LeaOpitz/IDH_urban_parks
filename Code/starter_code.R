@@ -3,6 +3,13 @@
 
 # Lea Opitz (s1757963)
 # Alessandra Cianfanelli (s1751650)
+# Lynsey Thomson (s1745313)
+
+# Install libraries ----
+install.packages("tidyverse")
+install.packages("wesanderson")
+install.packages("vegan")
+install.packages("goeveg")
 
 
 # Libraries ----
