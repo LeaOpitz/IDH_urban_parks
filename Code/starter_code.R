@@ -134,7 +134,7 @@ for(i in unique(group)) {
 # orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS3, display = "sites", labels = F, air = 0.01, cex = 1.25)
 legend("topright", legend=levels(group.fac), bty= "n",
-       col = colors, pch = 21, pt.bg = colors)
+       col = colors, pch = 21, pt.bg = colors, cex = 1.5)
 #take species off graph
 
 
