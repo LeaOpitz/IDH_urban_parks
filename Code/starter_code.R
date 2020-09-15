@@ -46,24 +46,26 @@ species = species[1:56,]
 
 ### boxplot----
 ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-      geom_boxplot(size=0.2) +
+      geom_boxplot(size=0.7) +
       theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
                     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
-  scale_y_discrete(name = "Shannon's Diversity Index\n")
+  scale_y_discrete(name = "Shannon's Diversity Index\n")+
+  theme(text=element_text(size=20), axis.line= element_line(size=1),axis.ticks = element_line(size=1))
                       
 ggsave("plantbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
  
 
 
 ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-  geom_boxplot(size=0.2) +
+  geom_boxplot(size=0.7) +
   theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
-  scale_y_discrete(name = "Shannon's Diversity Index\n")
+  scale_y_discrete(name = "Shannon's Diversity Index\n")+
+  theme(text=element_text(size=20), axis.line= element_line(size=1),axis.ticks = element_line(size=1))
 
 ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
 
