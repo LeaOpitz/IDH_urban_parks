@@ -126,7 +126,8 @@ for(i in unique(group)) {
 orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS3, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
 
-## Distance plot, with nice colours
+
+## Distance plot, with nice colours --------------
 
 group = rep(c("0m", "1m", "7m", "14m"), 14)
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
@@ -135,7 +136,8 @@ group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 colors = rep(c("yellow", "orange", "red", "purple"), 14)
 
 # Plot convex hulls with colors based on the group identity
-ordiplot(NMDS3, type = "n")
+par(mar=c(5,5,1,1))
+ordiplot(NMDS3, type = "n", cex.lab = 2, cex.axis = 2)
 
 for(i in unique(group)) {
   ordihull(NMDS3$point[grep(i, group),], draw="polygon",
