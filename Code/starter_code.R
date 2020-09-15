@@ -49,6 +49,8 @@ species <-  dplyr::select(plants,2:36)
 species[is.na(species)] <- 0
 species = species[1:56,]
 
+
+#insects
 insect <- full_join(da_ins_b, da_ins_c, by = "Order" )
 insect1 = insect[1:19,]
 
