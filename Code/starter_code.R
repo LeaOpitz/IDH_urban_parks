@@ -34,13 +34,9 @@ da_ins_c <- read.csv("Data/raw_insect_data_daphnebC.csv")
 da_ins_b <- read.csv("Data/raw_insect_data_daphneB.csv")
 #write.csv2(species, file="test.csv")
 
-insect <- full_join(ali_ins,da_ins_b, da_ins_c, by = "Order" )
-insect1 = insect[1:26,]
 
-names <- da_ins_b$Order
-test <- as.data.frame(t(da_ins_b[,-1]))
-colnames(test) <- names
-test$q_plots <- factor(row.names(test))
+
+
 
 #join data
 plants <- bind_rows(b_plants, c_plants) %>% #join
@@ -53,6 +49,15 @@ species <-  dplyr::select(plants,2:36)
 species[is.na(species)] <- 0
 species = species[1:56,]
 
+insect <- full_join(da_ins_b, da_ins_c, by = "Order" )
+insect1 = insect[1:19,]
+
+# swith rows and columns
+names <- insect1$Order
+insect2 <- as.data.frame(t(insect1[,-1]))
+colnames(insect2) <- names
+insect2$q_plots <- factor(row.names(insect2))
+insect2[is.na(insect2)] <- 0
 
 
 ### boxplot----
