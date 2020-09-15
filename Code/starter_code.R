@@ -53,8 +53,8 @@ ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
   scale_x_discrete(name = "\nDistance [m]") +
   scale_y_discrete(name = "Shannon's Diversity Index\n")
                       
-                      
- #wes_palette(name = "Darjeeling1", n = 2))
+ggsave("plantbox.png", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 1)                      
+ 
 
 
 ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
@@ -65,6 +65,7 @@ ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
   scale_x_discrete(name = "\nDistance [m]") +
   scale_y_discrete(name = "Shannon's Diversity Index\n")
 
+ggsave("invertbox.png", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 1)                      
 
 
 ### NMDS -----
