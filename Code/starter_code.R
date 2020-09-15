@@ -10,6 +10,7 @@ install.packages("tidyverse")
 install.packages("wesanderson")
 install.packages("vegan")
 install.packages("goeveg")
+install.packages("emmeans") #for tukey
 
 
 # Libraries ----
@@ -17,6 +18,7 @@ library(tidyverse)
 library(wesanderson)
 library(vegan)
 library(goeveg)
+library(emmeans)
 
 
 #load data ----
@@ -232,14 +234,21 @@ summary(plantlm2)
 anova(plantlm2) #less significant
 plot(plantlm2)
 
+aov.plant <- aov(Shannon~distance*Site, data = p_div)
+ 
 #insects
 insectlm <- lm(Shannon~distance*Site, data = i_div)
 summary(insectlm)
 anova(insectlm)
 plot(insectlm)
 
+
 ## distance as factor
 insectlm2 <- lm(Shannon~as.factor(distance)*Site, data = i_div)
 summary(insectlm2)
 anova(insectlm2) #less significant
 plot(insectlm2)
+
+### Tukey test ----
+tukey_plants <- TukeyHSD(aov.plant)
+tukey_plants
