@@ -69,6 +69,8 @@ ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm",
 
 
 ### NMDS -----
+
+##plants
 #check dimension
 dimcheckMDS(as.matrix(species), distance = "bray", k = 6, trymax = 20,
             autotransform = TRUE)
@@ -129,7 +131,63 @@ legend("topright", legend=levels(group.fac), bty= "n",
 
 
 
+##insects
+#check dimension
+dimcheckMDS(as.matrix(insectdata), distance = "bray", k = 6, trymax = 20,
+            autotransform = TRUE)
 
+# Run the NMDS
+set.seed(2)  # Because the final result depends on the initial random placement of the points, we`ll set a seed to make the results reproducible
+NMDS2 <- metaMDS(insectdata, k = 2, trymax = 100, trace = F, autotransform = FALSE, distance="bray")
+NMDS2
+
+# Check the stress
+stressplot(NMDS2)
+
+# Look at the results!
+plot(NMDS2)
+
+# nicer plot
+ordiplot(NMDS2, type = "n")
+orditorp(NMDS2, display = "species", col = "red", air = 0.01)
+orditorp(NMDS2, display = "sites", cex = 1.1, air = 0.01)
+
+## sites
+# Define a group variable (first 12 samples belong to group 1, last 12 samples to group 2)
+group = c(rep("Blackford", 28), rep("Craigmillar", 28))
+
+# Create a vector of color values with same length as the vector of group values
+colors = c(rep("orange", 28), rep("purple", 28))
+
+# Plot convex hulls with colors based on the group identity
+ordiplot(NMDS2, type = "n")
+
+for(i in unique(group)) {
+  ordihull(NMDS2$point[grep(i, group),], draw="polygon",
+           groups = group[group == i],col = colors[grep(i,group)],label=F) } 
+
+orditorp(NMDS2, display = "species", col = "red", air = 0.01)
+orditorp(NMDS2, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
+
+## Distance plot, with nice colours
+
+group = rep(c("0m", "1m", "7m", "14m"), 14)
+group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
+
+# Create a vector of color values with same length as the vector of group values
+colors = rep(c("yellow", "orange", "red", "purple"), 14)
+
+# Plot convex hulls with colors based on the group identity
+ordiplot(NMDS2, type = "n")
+
+for(i in unique(group)) {
+  ordihull(NMDS2$point[grep(i, group),], draw="polygon",
+           groups = group[group == i],col = colors[grep(i,group)],label=F) } 
+
+# orditorp(NMDS3, display = "species", col = "red", air = 0.01)
+orditorp(NMDS2, display = "sites", labels = F, air = 0.01, cex = 1.25)
+legend("topright", legend=levels(group.fac), bty= "n",
+       col = colors, pch = 21, pt.bg = colors)
 
 
 
@@ -155,6 +213,7 @@ summary(insectlm)
 anova(insectlm)
 plot(insectlm)
 
+## distance as factor
 insectlm2 <- lm(Shannon~as.factor(distance)*Site, data = i_div)
 summary(insectlm2)
 anova(insectlm2) #less significant
