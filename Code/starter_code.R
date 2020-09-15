@@ -27,12 +27,34 @@ i_div <- read.csv("Data/InsectD1.csv")
 
 #join data
 plants <- bind_rows(b_plants, c_plants) %>% #join
-  dplyr::select(1:36) %>% #remove last columns
-  dplyr::
+  dplyr::select(1:36) #remove last columns
+
 
 species <-  dplyr::select(plants,2:36) 
 species[is.na(species)] <- 0
 species = species[1:56,]
+
+### boxplot----
+ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
+      geom_boxplot(size=0.7) +
+      theme_classic()+ 
+  scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
+                    values = c("#FEB96C", "#CC92C2"))+
+  scale_x_discrete(name = "\nDistance [m]") +
+  scale_y_discrete(name = "Shannon's Diversity Index\n")
+                      
+                      
+ #wes_palette(name = "Darjeeling1", n = 2))
+
+
+ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
+  geom_boxplot(size=0.7) +
+  theme_classic()+ 
+  scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
+    values = c("#FEB96C", "#CC92C2"))+
+  scale_x_discrete(name = "\nDistance [m]") +
+  scale_y_discrete(name = "Shannon's Diversity Index\n")
+
 
 ### NMDS -----
 #check dimension
@@ -60,7 +82,7 @@ orditorp(NMDS3, display = "sites", cex = 1.1, air = 0.01)
 group = c(rep("Blackford", 28), rep("Craigmillar", 28))
 
 # Create a vector of color values with same length as the vector of group values
-colors = c(rep("red", 28), rep("blue", 28))
+colors = c(rep("orange", 28), rep("purple", 28))
 
 # Plot convex hulls with colors based on the group identity
 ordiplot(NMDS3, type = "n")
@@ -93,15 +115,27 @@ orditorp(NMDS3, display = "sites", col = c(rep("red",12),  rep("blue", 12)), air
 
 ##lms ----
 
-plantlm <- lm(Shannon~distance*Site, data = p_div)
-summary(plantlm)
-anova(plantlm)
-plot(plantlm)
+#plants
+plantlm1 <- lm(Shannon~distance*Site, data = p_div)
+summary(plantlm1)
+anova(plantlm1)
+plot(plantlm1)
 
 #differance between site and distance (continous) significant
 
 # distance as factor
-plantlm <- lm(Shannon~as.factor(distance)*Site, data = p_div)
-summary(plantlm)
-anova(plantlm) #less significant
-plot(plantlm)
+plantlm2 <- lm(Shannon~as.factor(distance)*Site, data = p_div)
+summary(plantlm2)
+anova(plantlm2) #less significant
+plot(plantlm2)
+
+#insects
+insectlm <- lm(Shannon~distance*Site, data = i_div)
+summary(insectlm)
+anova(insectlm)
+plot(insectlm)
+
+insectlm2 <- lm(Shannon~as.factor(distance)*Site, data = i_div)
+summary(insectlm2)
+anova(insectlm2) #less significant
+plot(insectlm2)
