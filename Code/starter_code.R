@@ -58,6 +58,10 @@ insect2 <- as.data.frame(t(insect1[,-1]))
 colnames(insect2) <- names
 insect2$q_plots <- factor(row.names(insect2))
 insect2[is.na(insect2)] <- 0
+insect2 = insect2[1:51,] #delete empty columns
+insect2 <- filter(insect2, !(q_plots %in% c("X.1.x","X.x")))
+
+insect3 <- dplyr::select(insect2,1:19)
 
 
 ### boxplot----
@@ -151,12 +155,12 @@ legend("topright", legend=levels(group.fac), bty= "n",
 
 ##insects
 #check dimension
-dimcheckMDS(as.matrix(insectdata), distance = "bray", k = 6, trymax = 20,
+dimcheckMDS(as.matrix(insect2), distance = "bray", k = 6, trymax = 20,
             autotransform = TRUE)
 
 # Run the NMDS
 set.seed(2)  # Because the final result depends on the initial random placement of the points, we`ll set a seed to make the results reproducible
-NMDS2 <- metaMDS(insectdata, k = 2, trymax = 100, trace = F, autotransform = FALSE, distance="bray")
+NMDS2 <- metaMDS(insect3, k = 2, trymax = 100, trace = F, autotransform = FALSE, distance="bray")
 NMDS2
 
 # Check the stress
