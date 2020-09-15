@@ -52,13 +52,14 @@ species = species[1:56,]
 insect <- full_join(da_ins_b, da_ins_c, by = "Order" )
 insect1 = insect[1:19,]
 
-# swith rows and columns
+# switch rows and columns
 names <- insect1$Order
 insect2 <- as.data.frame(t(insect1[,-1]))
 colnames(insect2) <- names
 insect2$q_plots <- factor(row.names(insect2))
 insect2[is.na(insect2)] <- 0
 
+insect3 <- dplyr::select(insect2,1:19)
 
 ### boxplot----
 ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
@@ -150,7 +151,7 @@ legend("topright", legend=levels(group.fac), bty= "n",
 #take species off graph
 
 
-## Distance plot, with nice colours PLANTS NMDS --------------
+## Distance plot, with nice colours insects NMDS --------------
 #check dimension
 dimcheckMDS(as.matrix(insectdata), distance = "bray", k = 6, trymax = 20,
             autotransform = TRUE)
