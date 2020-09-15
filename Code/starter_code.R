@@ -56,7 +56,7 @@ species = species[1:56,]
 insect <- full_join(da_ins_b, da_ins_c, by = "Order" )
 insect1 = insect[1:19,]
 
-# swith rows and columns
+# switch rows and columns
 names <- insect1$Order
 insect2 <- as.data.frame(t(insect1[,-1]))
 colnames(insect2) <- names
@@ -67,6 +67,7 @@ insect2 <- filter(insect2, !(q_plots %in% c("X.1.x","X.x")))
 
 insect3 <- dplyr::select(insect2,1:19)
 
+insect3 <- dplyr::select(insect2,1:19)
 
 ### boxplot----
 ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
@@ -158,9 +159,9 @@ legend("topright", legend=levels(group.fac), bty= "n",
 #take species off graph
 
 
-## Distance plot, with nice colours PLANTS NMDS --------------
+## Distance plot, with nice colours INSECTS NMDS --------------
 #check dimension
-dimcheckMDS(as.matrix(insect2), distance = "bray", k = 6, trymax = 20,
+dimcheckMDS(as.matrix(insect3), distance = "bray", k = 6, trymax = 20,
             autotransform = TRUE)
 
 # Run the NMDS
@@ -187,7 +188,7 @@ group = c(rep("Blackford", 28), rep("Craigmillar", 28))
 colors = c(rep("orange", 28), rep("purple", 28))
 
 # Plot convex hulls with colors based on the group identity
-ordiplot(NMDS2, type = "n")
+ordiplot(NMDS2, type = "n", cex.lab = 2, cex.axis = 2)
 
 for(i in unique(group)) {
   ordihull(NMDS2$point[grep(i, group),], draw="polygon",
@@ -196,16 +197,25 @@ for(i in unique(group)) {
 orditorp(NMDS2, display = "species", col = "red", air = 0.01)
 orditorp(NMDS2, display = "sites", col = c(rep("red",28),  rep("blue", 28)), air = 0.01, cex = 1.25)
 
-## Distance plot, with nice colours
+## Distance plot, with nice colours: INSECTS
 
-group = rep(c("0m", "1m", "7m", "14m"), 14)
+group <- substr(insect2$q_plots, 5,5)
+group[group=="1"] <- "0m"
+group[group=="2"] <- "1m"
+group[group=="3"] <- "7m"
+group[group=="4"] <- "14m"
+
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
 # Create a vector of color values with same length as the vector of group values
-colors = rep(c("yellow", "orange", "red", "purple"), 14)
+colors <- group
+colors[colors=="0m"] <- "yellow"
+colors[colors=="1m"] <- "orange"
+colors[colors=="7m"] <- "red"
+colors[colors=="14m"] <- "purple"
 
 # Plot convex hulls with colors based on the group identity
-ordiplot(NMDS2, type = "n")
+ordiplot(NMDS2, type = "n", cex.lab = 2, cex.axis = 2)
 
 for(i in unique(group)) {
   ordihull(NMDS2$point[grep(i, group),], draw="polygon",
@@ -213,7 +223,7 @@ for(i in unique(group)) {
 
 # orditorp(NMDS3, display = "species", col = "red", air = 0.01)
 orditorp(NMDS2, display = "sites", labels = F, air = 0.01, cex = 1.25)
-legend("topright", legend=levels(group.fac), bty= "n",
+legend("bottomleft", legend=levels(group.fac), bty= "n",
        col = colors, pch = 21, pt.bg = colors)
 
 
