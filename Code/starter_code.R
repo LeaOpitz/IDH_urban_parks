@@ -262,3 +262,12 @@ plot(insectlm2)
 ### Tukey test ----
 tukey_plants <- TukeyHSD(aov.plant)
 tukey_plants
+
+
+# emmeans package
+emmeans(plantlm2, pairwise ~ distance|Site)
+
+
+emmeans(insectlm2, pairwise ~ distance|Site)
+
+
