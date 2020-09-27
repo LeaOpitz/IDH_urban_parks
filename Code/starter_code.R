@@ -271,3 +271,14 @@ emmeans(plantlm2, pairwise ~ distance|Site)
 emmeans(insectlm2, pairwise ~ distance|Site)
 
 
+## -------  Simper test --------
+# insect data frame
+simper(insect3, group, permutations = 999, trace = FALSE,  parallel = getOption("mc.cores"))
+
+# results ...
+
+
+# plant data frame 
+simper(plants, group, permutations = 0, trace = FALSE,  parallel = getOption("mc.cores"))
+# Error in rowSums(comm, na.rm = TRUE) : 'x' must be numeric
+
