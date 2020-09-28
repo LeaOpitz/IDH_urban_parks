@@ -273,12 +273,34 @@ emmeans(insectlm2, pairwise ~ distance|Site)
 
 # ~~~~~~~~~~ community composition stats ~~~~~~~~~
 
-# Anosim ----
-# find what grouping to write in the code
-anosim(insect3, grouping = , permutations = 999, distance = "bray", strata = NULL,
+ # INSECTS 
+group <- substr(insect2$q_plots, 5,5)
+group[group=="1"] <- "0m"
+group[group=="2"] <- "1m"
+group[group=="3"] <- "7m"
+group[group=="4"] <- "14m"
+
+group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
+
+# Anosim for insects ----
+set.seed(123)
+anosim(insect3, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
        parallel = getOption("mc.cores"))
 
-# if there's anything significant then move onto the simper test to ind out exactly where the sig result is
+
+# PLANTS
+
+# set.seed(123)
+# find correct object for plants to insert :)
+# anosim(, , permutations = 999, distance = "bray", strata = NULL,
+    #   parallel = getOption("mc.cores"))
+
+
+
+
+
+
+
 
 
 ## -------  Simper test --------
