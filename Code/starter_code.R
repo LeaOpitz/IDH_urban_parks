@@ -271,6 +271,16 @@ emmeans(plantlm2, pairwise ~ distance|Site)
 emmeans(insectlm2, pairwise ~ distance|Site)
 
 
+# ~~~~~~~~~~ community composition stats ~~~~~~~~~
+
+# Anosim ----
+# find what grouping to write in the code
+anosim(insect3, grouping = , permutations = 999, distance = "bray", strata = NULL,
+       parallel = getOption("mc.cores"))
+
+# if there's anything significant then move onto the simper test to ind out exactly where the sig result is
+
+
 ## -------  Simper test --------
 # insect data frame
 simper(insect3, group, permutations = 999, trace = FALSE,  parallel = getOption("mc.cores"))
