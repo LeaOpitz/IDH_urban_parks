@@ -95,6 +95,7 @@ ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
 ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
 
 
+
 ### NMDS -----
 
 ##plants
@@ -283,34 +284,38 @@ group[group=="4"] <- "14m"
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
 # Anosim for insects ----
+# setting the seed means the 'random' outcome will always be the same and reproducible.
 set.seed(123)
 anosim(insect3, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
        parallel = getOption("mc.cores"))
 
 
 # PLANTS
-
-# set.seed(123)
+set.seed(123)
 # find correct object for plants to insert :)
-# anosim(, , permutations = 999, distance = "bray", strata = NULL,
-    #   parallel = getOption("mc.cores"))
 
+# this is what i THINK is the correct plant grouping to use 'group.fac'
+group = rep(c("0m", "1m", "7m", "14m"), 14)
+group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
+# however, when using group.fac in the code below, the following error appears
+anosim(plants, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
+      parallel = getOption("mc.cores"))
 
+# Error in vegdist(x, method = distance) : 
+# missing values are not allowed with argument 'na.rm = FALSE'
 
-
-
-
+# SO, can anyone help with what plant grouping to use??
 
 
 ## -------  Simper test --------
 # insect data frame
-simper(insect3, group, permutations = 999, trace = FALSE,  parallel = getOption("mc.cores"))
+# simper(insect3, group, permutations = 999, trace = FALSE,  parallel = getOption("mc.cores"))
 
 # results ...
 
 
 # plant data frame 
-simper(plants, group, permutations = 0, trace = FALSE,  parallel = getOption("mc.cores"))
+# simper(plants, group, permutations = 0, trace = FALSE,  parallel = getOption("mc.cores"))
 # Error in rowSums(comm, na.rm = TRUE) : 'x' must be numeric
 
