@@ -317,6 +317,6 @@ str(insect3)
 
 
 # PLANTS
-simper(species, group, permutations = 0, trace = FALSE,  parallel = getOption("mc.cores"))
+simper(species, group, permutations = 999, trace = FALSE,  parallel = getOption("mc.cores"))
 
 
