@@ -69,30 +69,32 @@ insect3 <- dplyr::select(insect2,1:19)
 
 insect3 <- dplyr::select(insect2,1:19)
 
+
+
 ### boxplot----
 ggplot(data= p_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-      geom_boxplot(size=0.7) +
+      geom_boxplot(size=0.3) +
       theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
                     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
-  scale_y_discrete(name = "Shannon's Diversity Index\n")+
-  theme(text=element_text(size=20), axis.line= element_line(size=1),axis.ticks = element_line(size=1))
+  scale_y_continuous(name = "Shannon's Diversity Index\n")+
+  theme(text=element_text(size=18), axis.line= element_line(size=0.5),axis.ticks = element_line(size=0.5))
                       
-ggsave("plantbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
+ggsave("plantbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 7)                      
  
 
 
 ggplot(data= i_div, aes(x= as.factor(distance), y=Shannon, fill= Site))+
-  geom_boxplot(size=0.7) +
+  geom_boxplot(size=0.3) +
   theme_classic()+ 
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
-  scale_y_discrete(name = "Shannon's Diversity Index\n")+
-  theme(text=element_text(size=20), axis.line= element_line(size=1),axis.ticks = element_line(size=1))
+  scale_y_continuous(name = "Shannon's Diversity Index\n")+
+  theme(text=element_text(size=18), axis.line= element_line(size=0.5),axis.ticks = element_line(size=0.5))
 
-ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 2.5)                      
+ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 7)                      
 
 
 
@@ -299,7 +301,7 @@ group = rep(c("0m", "1m", "7m", "14m"), 14)
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
 # however, when using group.fac in the code below, the following error appears
-anosim(plants, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
+anosim(species, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
       parallel = getOption("mc.cores"))
 
 # Error in vegdist(x, method = distance) : 
