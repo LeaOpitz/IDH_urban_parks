@@ -91,10 +91,10 @@ ggplot(data= i_div, aes(x = as.factor(distance), y = Shannon, fill = Site))+
   scale_fill_manual(  #scale_fill_manual controls the colours of the 'fill' you specified in the 'ggplot' function.
     values = c("#FEB96C", "#CC92C2"))+
   scale_x_discrete(name = "\nDistance [m]") +
-  scale_y_continuous(name = "Shannon's Diversity Index\n")+
+  scale_y_continuous(name = "Shannon's Diversity Index\n", limits = c(0,4))+
   theme(text = element_text(size = 18), axis.line = element_line(size = 0.5), axis.ticks = element_line(size = 0.5))
 
-ggsave("invertbox.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 7)                      
+ggsave("invertbox_newaxis.pdf", plot = last_plot(), width = 6, height = 5, units = "cm", scale = 7)                      
 
 
 
