@@ -300,11 +300,11 @@ set.seed(123)
 group = rep(c("0m", "1m", "7m", "14m"), 14)
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
-<<<<<<< HEAD
+
 # however, when using group.fac in the code below, the following error appears
-=======
+
 # anosim for plants ---
->>>>>>> 6fc09e9863adbff3638305b1ec6ebd95ad663d42
+
 anosim(species, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
       parallel = getOption("mc.cores"))
 
