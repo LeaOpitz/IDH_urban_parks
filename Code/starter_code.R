@@ -301,8 +301,6 @@ group = rep(c("0m", "1m", "7m", "14m"), 14)
 group.fac <- factor(group, levels = c("0m", "1m", "7m", "14m"))
 
 
-# however, when using group.fac in the code below, the following error appears
-
 # anosim for plants ---
 
 anosim(species, grouping = group.fac, permutations = 999, distance = "bray", strata = NULL,
